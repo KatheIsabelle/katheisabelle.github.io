@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Portfolio — Mesa de Leitura</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=EB+Garamond:ital@0;1&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div id="app">
+
+  <!-- ===================== MESA (view principal) ===================== -->
+  <section id="table-view" class="view view--active">
+
+    <div class="sky-bg" id="skyBg" aria-hidden="true">
+      <div class="sky-bg__layer is-active" style="background-image:url('assets/sky/sky-01.png')"></div>
+      <div class="sky-bg__layer" style="background-image:url('assets/sky/sky-02.png')"></div>
+      <div class="sky-bg__layer" style="background-image:url('assets/sky/sky-03.png')"></div>
+      <div class="sky-bg__layer" style="background-image:url('assets/sky/sky-04.png')"></div>
+      <div class="sky-bg__layer" style="background-image:url('assets/sky/sky-05.png')"></div>
+      <div class="sky-bg__layer" style="background-image:url('assets/sky/sky-06.png')"></div>
+      <div class="sky-bg__layer" style="background-image:url('assets/sky/sky-07.png')"></div>
+      <div class="sky-bg__layer" style="background-image:url('assets/sky/sky-08.png')"></div>
+    </div>
+
+    <div class="table">
+
+      <!-- Card Sobre mim (canto superior esquerdo): nome, foto, mini texto e link pra página completa -->
+      <aside class="about-mini" id="aboutMini">
+        <h1 class="title">
+          <span class="title__sparkle title__sparkle--1" aria-hidden="true"></span>
+          <span class="title__sparkle title__sparkle--2" aria-hidden="true"></span>
+          <span class="title__sparkle title__sparkle--3" aria-hidden="true"></span>
+          <span id="titleText">Kathe Beserra</span>
+        </h1>
+        <img class="about-mini__photo" src="assets/portfolio/about/me.jpg" alt="Kathe Beserra">
+                Game designer e desenvolvedora, mestranda em Ciência da Computação. Tenho experiência com jogos 2D e 3D na Unity. Pesquiso realidade virtual, desenho e busco criar experiências marcantes por meio dos games.</p>
+        <div class="about-mini__links">
+          <a class="px-icon" href="https://katheisabelle.itch.io" target="_blank" rel="noopener" aria-label="itch.io"><img src="assets/portfolio/icons/itch.png" alt=""></a>
+          <a class="px-icon" href="https://github.com/KatheIsabelle" target="_blank" rel="noopener" aria-label="GitHub"><img src="assets/portfolio/icons/github.png" alt=""></a>
+          <a class="px-icon" href="SEU-LINK-AQUI" target="_blank" rel="noopener" aria-label="LinkedIn"><img src="assets/portfolio/icons/linkedin.png" alt=""></a>
+          <a class="px-icon" href="https://www.instagram.com/katheisab/" target="_blank" rel="noopener" aria-label="Instagram"><img src="assets/portfolio/icons/instagram.png" alt=""></a>
+          <a class="px-icon" href="https://drive.google.com/file/d/1XQMn1mp_J-I52Tkbost6bdA48JsdXqvA/view?usp=sharing" target="_blank" rel="noopener" aria-label="Currículo"><img class="px-icon__pixel" src="assets/halloween/cursed_scroll.png" alt=""></a>
+        </div>
+      </aside>
+
+      <!-- Grimório: página dupla aberta, com as cartas em slots fixos por cima,
+           como um glossário/colecionável (geradas via JS) -->
+      <div class="book">
+        <img class="book__art" src="assets/book/book-art.png" alt="" aria-hidden="true">
+
+        <div class="cloth" id="cloth">
+          <div class="fan" id="fan"></div>
+        </div>
+      </div>
+
+      <!-- Ações da carta ativa (o texto agora fica no balão do gato) -->
+      <div class="info" id="info">
+        <div class="info__actions" id="infoActions">
+          <button class="px-btn" id="enterBtn"><img src="assets/halloween/spell_book.png" alt=""><span>entrar</span></button>
+          <button class="px-btn" id="closeBtn"><img src="assets/halloween/skull.png" alt=""><span>fechar</span></button>
+        </div>
+      </div>
+
+      <div class="progress">
+        <div class="progress__dots" id="progressDots"></div>
+        <p class="progress__label" id="progressLabel">0 de 5 cartas descobertas</p>
+      </div>
+
+    </div>
+
+    <!-- Familiar grande, aparecendo da cintura pra cima, sobre a faixa de fala fixa no rodapé -->
+    <div class="familiar" id="familiar" aria-hidden="true"></div>
+    <div class="speech-bar" id="speechBar">
+      <p id="bubbleText">psiu...escolha uma carta para saber mais.</p>
+    </div>
+
+  </section>
+
+  <!-- ===================== SEÇÃO (conteúdo da carta) ===================== -->
+  <section id="section-view" class="view">
+    <div class="section__bg" id="sectionBg" aria-hidden="true"></div>
+    <div class="section">
+
+      <button class="px-btn px-btn--wide back-btn" id="backBtn">
+        <img src="assets/halloween/jack_o_lantern_happy.png" alt="">
+        <span>← início do site</span>
+      </button>
+      <div class="section__header">
+        <span class="section__symbol" id="sectionSymbol"></span>
+        <div>
+          <p class="section__eyebrow" id="sectionEyebrow"></p>
+          <h2 class="section__title" id="sectionTitle"></h2>
+        </div>
+      </div>
+      <div class="section__body" id="sectionBody">
+        <!-- conteúdo placeholder por carta, preenchido via JS -->
+      </div>
+    </div>
+  </section>
+
+</div>
+
+
+<!-- visualizador de imagens (lightbox) -->
+<div class="lightbox" id="lightbox" hidden>
+  <button class="px-btn px-btn--wide px-btn--small lightbox__close" id="lightboxClose">
+    <img src="assets/halloween/skull.png" alt="">
+    <span>fechar</span>
+  </button>
+  <button class="lightbox__nav lightbox__nav--prev" id="lightboxPrev" aria-label="anterior">‹</button>
+  <figure class="lightbox__figure">
+    <img id="lightboxImg" src="" alt="">
+    <figcaption id="lightboxCaption"></figcaption>
+  </figure>
+  <button class="lightbox__nav lightbox__nav--next" id="lightboxNext" aria-label="próxima">›</button>
+</div>
+
+
+<script src="script.js"></script>
+</body>
+</html>

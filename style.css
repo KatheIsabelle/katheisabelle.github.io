@@ -1,0 +1,1247 @@
+/* ============================================================
+   PALETA — troque aqui se quiser ajustar os tons
+   ============================================================ */
+:root{
+  --ink-night: #14121f;
+  --ink-night-2: #201c33;
+  --ancient-gold: #c9a227;
+  --parchment: #e8dcc0;
+  --amethyst: #6a4c93;
+  --twilight-blue: #2f3e6e;
+  --old-rose: #b76e79;
+
+  --px-line: #8257c9;
+  --px-dark: #14121f;
+  --px-fill: #2b2347;
+  --px-fill-2: #4a3578;
+
+  --font-display: 'Cinzel', serif;
+  --font-body: 'EB Garamond', serif;
+  --font-title: 'Halloweenpixels', 'Cinzel', serif;
+}
+
+@font-face{
+  font-family: "BetaniaPatmos";
+  src: url("assets/fonts/BetaniaPatmos-Regular.ttf") format("truetype");
+}
+
+
+*{ box-sizing: border-box; }
+
+html, body{
+  margin: 0;
+  height: 100%;
+  background: var(--ink-night);
+  color: var(--parchment);
+  font-family: var(--font-body);
+  overflow-x: hidden;
+  cursor: url('assets/cursor/cursor-wand.png') 7 10, auto;
+}
+
+/* varinha vira mãozinha em tudo que é clicável */
+a, button, .fan-card, [role="button"], .title, .familiar{
+  cursor: url('assets/cursor/cursor-hand.png') 10 2, pointer;
+}
+
+#app{ position: relative; min-height: 100vh; }
+
+.view{
+  display: none;
+  min-height: 100vh;
+}
+.view--active{ display: block; }
+
+/* ============================================================
+   FUNDO — céu em camadas (pixel art), alterna sozinho entre as
+   variações de luz (dia, entardecer, noite...) com crossfade,
+   fica na camada mais baixa, atrás do livro, gato e cartas
+   ============================================================ */
+#table-view{
+  position: relative;
+  min-height: auto;   /* sobrescreve o min-height:100vh de .view, evita espaço vazio sobrando embaixo */
+  background: var(--ink-night-2);
+  padding-bottom: 96px; /* espaço reservado pra faixa de fala fixa no rodapé não cobrir o livro */
+}
+.sky-bg{
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+}
+.sky-bg__layer{
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center bottom;
+  background-repeat: no-repeat;
+  image-rendering: pixelated;
+  opacity: 0;
+  transition: opacity 3s ease-in-out;
+}
+.sky-bg__layer.is-active{
+  opacity: 1;
+}
+
+.table{
+  position: relative;
+  z-index: 1;
+  max-width: none;
+  margin: 0;
+  padding: 100px 100px 20px 300px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+/* ============================================================
+   TÍTULO — placa roxa flutuante (Royal Violet UI Kit), centralizada
+   acima do livro. Sem fingir estar pendurada em nada: flutua com
+   um leve balanço vertical e brilho roxo ao redor, como um efeito
+   mágico. O brilho dourado/roxo do texto e os sparkles continuam.
+   ============================================================ */
+.title{
+  position: relative;
+  width: calc(100% - 8px);
+  margin: 4px 4px 0;
+  padding: 8px 6px;
+  text-align: center;
+  background: var(--px-fill-2);
+  box-shadow:
+    0 -4px 0 0 var(--ancient-gold), 0 4px 0 0 var(--ancient-gold), -4px 0 0 0 var(--ancient-gold), 4px 0 0 0 var(--ancient-gold),
+    0 -8px 0 0 var(--px-dark), 0 8px 0 0 var(--px-dark), -8px 0 0 0 var(--px-dark), 8px 0 0 0 var(--px-dark);
+}
+.title span{
+  display: block;
+  width: 100%;
+  font-family: var(--font-title);
+  font-weight: 400;
+  font-size: 30px;
+  line-height: 1.0;
+  letter-spacing: 0.02em;
+  text-align: center;
+  color: var(--parchment);
+  animation: titleGlow 5s ease-in-out infinite;
+}
+@keyframes titleGlow{
+  0%, 100%{
+    text-shadow:
+      0 0 6px rgba(24, 19, 5, 0.75),
+      0 0 16px rgba(201,162,39,0.45),
+      0 0 30px rgba(106,76,147,0.3),
+      3px 3px 0 rgba(20,18,31,0.9);
+  }
+  50%{
+    text-shadow:
+      0 0 12px rgba(183,110,121,0.85),
+      0 0 26px rgba(106,76,147,0.75),
+      0 0 48px rgba(201,162,39,0.55),
+      3px 3px 0 rgba(20,18,31,0.9);
+  }
+}
+
+.title__sparkle{
+  position: absolute;
+  background:
+    linear-gradient(var(--sparkle-color, var(--ancient-gold)), var(--sparkle-color, var(--ancient-gold))) center / 2px 100% no-repeat,
+    linear-gradient(var(--sparkle-color, var(--ancient-gold)), var(--sparkle-color, var(--ancient-gold))) center / 100% 2px no-repeat;
+  opacity: 0;
+  filter: drop-shadow(0 0 5px var(--sparkle-color, rgba(201,162,39,0.9)));
+  animation: sparkleTwinkle 4s ease-in-out infinite;
+  pointer-events: none;
+}
+.title__sparkle--1{ top: -10px;   left: 10%;  width: 12px; height: 12px; --sparkle-color: var(--ancient-gold); animation-delay: 0s; }
+.title__sparkle--2{ top: 40%;     right: -10px; width: 10px; height: 10px; --sparkle-color: var(--old-rose);   animation-delay: .8s; }
+.title__sparkle--3{ bottom: -10px; left: 30%;  width: 13px; height: 13px; --sparkle-color: var(--amethyst);    animation-delay: 1.6s; }
+@keyframes sparkleTwinkle{
+  0%, 100%{ opacity: 0; transform: scale(0.3) rotate(0deg); }
+  50%{ opacity: 1; transform: scale(1.1) rotate(45deg); }
+}
+
+/* ============================================================
+   GRIMÓRIO — página dupla aberta (arte única, com moldura/
+   ornamentos já desenhados). As cartas ficam em slots fixos
+   sobre as páginas, como um glossário/colecionável.
+   ============================================================ */
+.book{
+  position: relative;
+  z-index: 1;
+  width: min(60vw, 640px);
+  aspect-ratio: 1061 / 640;
+  margin: 0 auto;
+}
+.book__art{
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  image-rendering: pixelated;
+  image-rendering: -moz-crisp-edges;
+  image-rendering: crisp-edges;
+  filter: drop-shadow(0 24px 40px rgba(0,0,0,0.55));
+}
+
+/* área "segura" das páginas (sem entrar nos ornamentos de canto) —
+   as cartas são posicionadas em % dentro dessa área */
+.cloth{
+  position: absolute;
+  left: 3%;
+  right: 3%;
+  top: 4%;
+  bottom: 9%;
+  z-index: 2;
+}
+.fan{
+  position: absolute;
+  inset: 0;
+}
+
+/* card Sobre mim — canto superior esquerdo da tela */
+.about-mini{
+  position: fixed;
+  top: 30px;
+  left: 30px;
+  width: 340px;
+  z-index: 5;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  padding: 20px 18px 18px;
+  background: var(--px-fill);
+  text-align: center;
+  box-shadow:
+    0 -4px 0 0 var(--px-line), 0 4px 0 0 var(--px-line), -4px 0 0 0 var(--px-line), 4px 0 0 0 var(--px-line),
+    0 -8px 0 0 var(--px-dark), 0 8px 0 0 var(--px-dark), -8px 0 0 0 var(--px-dark), 8px 0 0 0 var(--px-dark),
+    inset 0 4px 0 0 rgba(255,255,255,0.08), inset 0 -4px 0 0 rgba(0,0,0,0.25);
+  transition: opacity .35s ease;
+}
+.about-mini::before,
+.about-mini::after{
+  content: "";
+  position: absolute;
+  width: 48px;
+  height: 48px;
+  background-repeat: no-repeat;
+  background-size: contain;
+  image-rendering: pixelated;
+  pointer-events: none;
+}
+.about-mini::before{ top: -22px; left: -22px; background-image: url('assets/halloween/cobweb.png'); }
+.about-mini::after{ top: -22px; right: -22px; background-image: url('assets/halloween/bat.png'); }
+
+.about-mini__photo{
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 4px solid var(--ancient-gold);
+  box-shadow: 0 0 0 4px var(--px-dark);
+}
+.about-mini p{
+  margin: 0;
+  font-size: 15px;
+  line-height: 1.55;
+  color: var(--parchment);
+}
+.about-mini__links{
+  display: flex;
+  gap: 14px;
+  justify-content: center;
+  margin-top: 6px;
+}
+.px-icon{
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--px-fill-2);
+  box-shadow:
+    0 -3px 0 0 var(--px-line), 0 3px 0 0 var(--px-line), -3px 0 0 0 var(--px-line), 3px 0 0 0 var(--px-line),
+    0 -6px 0 0 var(--px-dark), 0 6px 0 0 var(--px-dark), -6px 0 0 0 var(--px-dark), 6px 0 0 0 var(--px-dark);
+  transition: transform .12s steps(2), background .12s;
+}
+.px-icon img{ width: 24px; height: 24px; object-fit: contain; }
+.px-icon__pixel{ width: 32px !important; height: 32px !important; image-rendering: pixelated; }
+.px-icon:hover{ background: #6a4c93; transform: translateY(-3px); }
+#table-view:has(.fan.has-active) .about-mini{
+  opacity: 0.25;
+  pointer-events: none;
+}
+
+/* ============================================================
+   FAMILIAR — grande, próxima da tela, aparecendo da cintura pra
+   cima (o "bottom" negativo joga a parte de baixo do sprite pra
+   fora da viewport, cortando ela como um personagem de HUD).
+   Sobrepõe a faixa de fala fixa no rodapé.
+   ============================================================ */
+.familiar{
+  position: fixed;
+  left: -40px;
+  bottom: -10px;
+  z-index: 46;
+  width: 250px;
+  height: 250px;
+  background-image: url('assets/kitty/witchKitty_curiousIdleBreaker.png');
+  background-repeat: no-repeat;
+  background-size: 300% 400%;
+  image-rendering: pixelated;
+  image-rendering: -moz-crisp-edges;
+  image-rendering: crisp-edges;
+  filter: drop-shadow(0 14px 10px rgba(0,0,0,0.45));
+  pointer-events: auto;
+}
+
+/* faixa de fala — ocupa toda a largura do rodapé, atrás do gato
+   (que fica por cima, sobrepondo a faixa à esquerda) */
+.speech-bar{
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 40;
+  min-height: 78px;
+  display: flex;
+  align-items: center;
+  background: rgba(58, 54, 0, 0.92);
+  border-top: 2px solid var(--ancient-gold);
+  box-shadow: 0 -10px 24px rgba(0,0,0,0.4);
+  padding: 14px 32px 14px 230px;
+}
+.speech-bar p{
+  margin: 0;
+  font-size: 30px;
+  line-height: 1.4;
+  color: var(--parchment);
+}
+
+/* ============================================================
+   CARTAS EM SLOTS — cada carta fica num ponto fixo da página
+   (glossário/colecionável), virada pra baixo. As proporções
+   (104x161) seguem exatamente a arte das cartas (73x113).
+   Posição de cada slot vem de --sx/--sy (JS, em % da .fan) e
+   uma leve inclinação individual de --tilt.
+   ============================================================ */
+.fan-card{
+  position: absolute;
+  left: var(--sx, 50%);
+  top: var(--sy, 50%);
+  width: 72px;
+  height: 112px;
+  margin: -56px 0 0 -36px;
+  transform-origin: 50% 50%;
+  transform: rotate(var(--tilt, 0deg));
+  transition: transform 0.35s cubic-bezier(0.4, 0.2, 0.2, 1), filter 0.35s ease, opacity 0.35s ease, left 0.45s cubic-bezier(0.4, 0.2, 0.2, 1), top 0.45s cubic-bezier(0.4, 0.2, 0.2, 1), margin 0.45s cubic-bezier(0.4, 0.2, 0.2, 1);
+}
+.fan-card:hover{
+  transform: rotate(var(--tilt, 0deg)) translateY(-10px);
+}
+.fan-card.is-discovered .fan-card__face--back{
+  box-shadow: 0 2px 10px rgba(0,0,0,0.4), 0 0 0 2px rgba(201,162,39,0.6);
+}
+.fan.has-active .fan-card:not(.is-active){
+  opacity: 0.25;
+  filter: grayscale(0.5) brightness(0.8);
+  pointer-events: none;
+}
+.fan-card.is-active{
+  left: 50%;
+  top: 50%;
+  width: 190px;
+  height: 294px;
+  margin: -147px 0 0 -95px;
+  transform: rotate(0deg);
+  z-index: 20 !important;
+}
+.fan-card.is-active .fan-card__face{
+  box-shadow: 0 0 0 3px var(--ancient-gold), 0 20px 40px rgba(0,0,0,0.6);
+}
+
+.fan-card__inner{
+  position: relative;
+  width: 100%; height: 100%;
+  perspective: 900px;
+}
+.fan-card__inner > *{
+  position: absolute;
+  inset: 0;
+}
+.fan-card__face{
+  border-radius: 6px;
+  backface-visibility: hidden;
+  overflow: hidden;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.4);
+  transition: transform 0.6s cubic-bezier(0.4, 0.2, 0.2, 1), box-shadow 0.3s ease;
+  transform-style: preserve-3d;
+}
+.fan-card__face--back{
+  background-image: url('assets/cards/back.png');
+  background-size: cover;
+  image-rendering: pixelated;
+  image-rendering: -moz-crisp-edges;
+  image-rendering: crisp-edges;
+}
+.fan-card__face--front{
+  transform: rotateY(180deg);
+}
+.fan-card.is-flipped .fan-card__face--back{
+  transform: rotateY(180deg);
+}
+.fan-card.is-flipped .fan-card__face--front{
+  transform: rotateY(360deg);
+}
+.fan-card__face--front img{
+  width: 100%; height: 100%;
+  object-fit: cover;
+  display: block;
+  image-rendering: pixelated;
+  image-rendering: -moz-crisp-edges;
+  image-rendering: crisp-edges;
+}
+
+/* ============================================================
+   INFO DA CARTA ATIVA — overlay fixo, não empurra a página
+   (assim "entrar"/"fechar" sempre ficam visíveis sem precisar rolar).
+   Painel e botões usam a arte do Royal Violet UI Kit, pra combinar
+   com a placa do título.
+   ============================================================ */
+.info{
+  position: fixed;
+  top: 200px;
+  right: 40px;
+  z-index: 50;
+  opacity: 0;
+  transform: translateX(20px);
+  pointer-events: none;
+  transition: opacity 0.35s ease, transform 0.35s ease;
+}
+.info.is-visible{
+  opacity: 1;
+  transform: translateX(0);
+  pointer-events: auto;
+}
+.info__actions{
+  display: flex;
+  flex-direction: column;
+  gap: 26px;
+}
+.px-btn{
+  -webkit-appearance: none;
+  appearance: none;
+  border: none;
+  outline: none;
+  width: 92px;
+  padding: 10px 6px 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  background: var(--px-fill-2);
+  color: #ffffff;
+  font-family: var(--font-title);
+  font-size: 15px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  text-shadow: 0 1px 2px rgba(20,18,31,0.85);
+  box-shadow:
+    0 -4px 0 0 var(--px-line), 0 4px 0 0 var(--px-line), -4px 0 0 0 var(--px-line), 4px 0 0 0 var(--px-line),
+    0 -8px 0 0 var(--px-dark), 0 8px 0 0 var(--px-dark), -8px 0 0 0 var(--px-dark), 8px 0 0 0 var(--px-dark);
+  transition: transform .12s steps(2), background .12s;
+}
+.px-btn img{ width: 48px; height: 48px; image-rendering: pixelated; }
+.px-btn:hover{ background: #6a4c93; transform: translateY(-3px); }
+.px-btn:active{ transform: translateY(2px); }
+
+.btn{
+  -webkit-appearance: none;
+  appearance: none;
+  outline: none;
+  font-family: var(--font-title);
+  font-size: 16px;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  padding: 13px 28px;
+  border: none;
+  background-color: transparent;
+  background-image: url('assets/ui/button-normal.png');
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  color: #ffffff;                              /* branco puro: ~5:1 de contraste sobre o roxo do botão (parchment dava só ~3.3:1) */
+  text-shadow: 0 1px 2px rgba(20,18,31,0.85);   /* mantém legível nas partes mais claras do degradê do botão */
+  transition: background-image 0.15s ease, transform 0.15s ease;
+}
+.btn:focus{ outline: none; }
+.btn:hover{ background-image: url('assets/ui/button-hover.png'); transform: translateY(-1px); }
+.btn:active{ background-image: url('assets/ui/button-pressed.png'); transform: translateY(0); }
+
+.btn--ghost{
+  background-image: url('assets/ui/button-pressed.png');
+  opacity: 0.8;
+}
+.btn--ghost:hover{ background-image: url('assets/ui/button-hover.png'); opacity: 1; }
+
+/* ============================================================
+   PROGRESSO
+   ============================================================ */
+.progress{
+  margin-top: 14px;
+}
+.progress__dots{
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  margin-bottom: 8px;
+}
+.progress__dot{
+  display: none;
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: rgba(232,220,192,0.25);
+}
+.progress__dot.is-done{
+  background: var(--ancient-gold);
+}
+.progress__label{
+  display: none;
+  font-size: 12px;
+  color: rgba(232,220,192,0.45);
+  margin: 0;
+}
+
+/* ============================================================
+   VIEW DE SEÇÃO
+   ============================================================ */
+#section-view{
+  position: relative;
+  background: var(--ink-night-2);
+}
+
+/* padrão de círculos de invocação ladrilhado atrás do conteúdo da
+   página — toca a animação de abertura uma vez (JS troca os frames)
+   e depois fica parado no círculo já formado */
+.section__bg{
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background-repeat: repeat;
+  background-size: 110px 110px;
+  opacity: 0.3;
+  pointer-events: none;
+}
+
+.section{
+  position: relative;
+  z-index: 1;
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 40px 24px 80px;
+}
+.back-btn{ margin-bottom: 32px; }
+
+/* dois "banners" sólidos que separam o texto do padrão ladrilhado
+   atrás: um pro cabeçalho (símbolo + título), outro pro corpo do
+   texto — em vez de um fundo corrido, ficam como dois cartões */
+.section__header{
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  margin-bottom: 20px;
+  padding: 20px 24px;
+  background: rgba(20,18,31,0.85);
+  border: 1px solid rgba(232,220,192,0.12);
+  border-radius: 14px;
+  box-shadow: 0 10px 26px rgba(0,0,0,0.4);
+}
+.section__symbol{
+  width: 48px;
+  height: 74px;
+  flex-shrink: 0;
+  border-radius: 4px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.35);
+}
+.section__symbol img{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  image-rendering: pixelated;
+  image-rendering: -moz-crisp-edges;
+  image-rendering: crisp-edges;
+}
+.section__eyebrow{
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--old-rose);
+  margin: 0 0 4px;
+}
+.section__title{
+  font-family: var(--font-display);
+  font-size: 26px;
+  font-weight: 600;
+  margin: 0;
+  color: var(--parchment);
+}
+.section__body{
+  font-size: 17px;
+  line-height: 1.7;
+  color: rgba(0, 0, 0, 0.85);
+  background: rgba(214, 230, 245, 0.85);
+  border: 1px solid rgba(232,220,192,0.12);
+  border-radius: 14px;
+  padding: 24px 28px 32px;
+  box-shadow: 0 10px 26px rgba(0,0,0,0.4);
+}
+.section__body p{ margin: 0 0 16px; }
+.section__body a{ color: var(--ancient-gold); }
+.section__body a:hover{ color: #e0b93a; }
+.section__body h3{
+  font-family: var(--font-display);
+  font-size: 16px;
+  letter-spacing: 0.04em;
+  color: var(--old-rose);
+  text-transform: uppercase;
+  margin: 28px 0 12px;
+}
+.section__body h3:first-child{ margin-top: 0; }
+
+/* destaques coloridos no texto corrido — trilha de trajetória
+   (áreas de atuação, projetos, instituições) */
+.hl{ font-weight: 600; }
+.hl--gold{ color: var(--ancient-gold); }
+.hl--rose{ color: var(--old-rose); }
+.hl--violet{ color: #b39ddb; }
+
+/* ============================================================
+   CONTEÚDO REAL — sobre mim (skills), arte (galeria),
+   jogos, publicações, CV/contato
+   ============================================================ */
+
+/* sobre mim: chips de tecnologias */
+.skills-row{
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin: 0 0 20px;
+}
+
+.tech-icon{
+  width: 18px;
+  height: 18px;
+  display: inline-block;
+  vertical-align: -3px;
+  margin: 0 2px;
+  object-fit: contain;
+}
+
+.skills-row img{
+  width: 34px;
+  height: 34px;
+  object-fit: contain;
+  padding: 6px;
+  background: rgba(232,220,192,0.06);
+  border: 1px solid rgba(232,220,192,0.15);
+  border-radius: 8px;
+}
+
+.about-links{
+  display: flex;
+  gap: 14px;
+  justify-content: center;
+}
+
+.about-links .icon-btn{
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(232,220,192,0.08);
+  border: 1px solid rgba(232,220,192,0.18);
+  transition: transform .15s ease, background .15s ease;
+}
+
+.about-links .icon-btn:hover{
+  transform: translateY(-2px);
+  background: rgba(232,220,192,0.16);
+}
+
+.about-links .icon-btn img{
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+}
+
+/* galeria de arte */
+.gallery{
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px;
+  margin: 0 0 8px;
+}
+.gallery__item{
+  margin: 0;
+  background: rgba(0,0,0,0.2);
+  border: 1px solid rgba(232,220,192,0.12);
+  border-radius: 6px;
+  overflow: hidden;
+}
+.gallery__item img{
+  width: 100%;
+  height: 150px;
+  object-fit: cover;
+  display: block;
+}
+.gallery__item figcaption{
+  font-size: 15px;
+  color: rgba(85, 0, 85, 0.6);
+  padding: 8px 10px;
+}
+
+/* jogos (estilos base do vídeo, reaproveitados nas fichas) */
+.game__video{
+  position: relative;
+  padding-bottom: 56.25%;
+  height: 0;
+  overflow: hidden;
+  border-radius: 6px;
+  margin-bottom: 10px;
+}
+.game__video iframe{
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+/* CV / contato */
+.contact-links{
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 4px 0 24px;
+}
+.contact-form{
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 8px;
+}
+.contact-form input,
+.contact-form textarea{
+  font-family: var(--font-body);
+  font-size: 15px;
+  padding: 10px 12px;
+  border-radius: 6px;
+  border: 1px solid rgba(232,220,192,0.25);
+  background: rgba(232,220,192,0.05);
+  color: var(--parchment);
+}
+.contact-form textarea{ resize: vertical; }
+.contact-form ::placeholder{ color: rgba(232,220,192,0.4); }
+.contact-form button{ align-self: flex-start; }
+
+/* fade simples entre views */
+.view{ animation: none; }
+.view--active{ animation: fadeIn 0.35s ease; }
+@keyframes fadeIn{
+  from{ opacity: 0; }
+  to{ opacity: 1; }
+}
+
+@media (max-width: 480px){
+  .title{ width: 88vw; max-width: 260px; height: 88px; margin: 6px auto 10px; padding: 0 16px; }
+  .title span{ font-size: 22px; }
+  .book{ width: 96vw; margin-top: 4px; }
+  .fan-card{ width: 78px; height: 121px; margin: -60.5px 0 0 -39px; }
+  .fan-card.is-active{
+    width: 146px; height: 226px; margin: -113px 0 0 -73px;
+    transform: rotate(0deg);
+  }
+  .info{ padding: 10px 16px 14px; right: 12px; }
+
+  .familiar{ left: 8px; bottom: -70px; width: 220px; height: 220px; background-size: 660px 880px; }
+  .speech-bar{ padding: 10px 16px 10px 150px; min-height: 64px; }
+  .speech-bar p{ font-size: 14px; }
+
+  .gallery{ grid-template-columns: 1fr; }
+  .gallery__item img{ height: 190px; }
+}
+
+
+/* ============================================================
+   GALERIA DE JOGOS — grade de tiles + fichas
+   ============================================================ */
+.games-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,128px);
+  justify-content:center;
+  gap:28px 32px;
+  padding:6px;
+}
+.games-grid[hidden],.game-sheet[hidden]{display:none}
+
+.game-tile{
+  position:relative;
+  width:128px;
+  display:flex;flex-direction:column;align-items:center;gap:8px;
+  padding:0;background:none;border:0;cursor:pointer;
+  text-decoration:none;color:#f3e9ff;font:inherit;
+  transition:transform .15s;
+}
+.game-tile:hover{transform:translateY(-4px)}
+.game-tile__cover{
+  width:128px;height:128px;display:block;
+  image-rendering:pixelated;
+  box-shadow:0 6px 0 0 var(--px-dark);
+}
+.game-tile:hover .game-tile__cover{filter:brightness(1.15)}
+.game-tile__title{
+  font-size:18px;line-height:1.1;text-align:center;color:#470055;
+}
+.game-tile__meta{font-size:15px;color:#665700}
+
+/* selo "WIP" (em desenvolvimento) */
+.game-tile__wip{
+  position:absolute;top:-8px;right:-8px;z-index:2;
+  padding:3px 8px;
+  background:#f2c94c;color:#14121f;
+  font-size:13px;font-weight:bold;letter-spacing:.5px;
+  box-shadow:0 0 0 3px #14121f,0 4px 0 3px #8257c9;
+  transform:rotate(6deg);
+}
+
+/* ficha do jogo */
+.game-sheet__top{
+  display:grid;
+  grid-template-columns:1.2fr 1fr;
+  gap:22px;
+  align-items:stretch;          /* as duas colunas têm a mesma altura */
+}
+
+.game-sheet .game__video{
+  position:relative;
+  width:100%;
+  height:100%;
+  min-height:260px;
+  aspect-ratio:auto;
+  background:#000;
+  box-shadow:0 0 0 4px var(--px-line), 0 8px 0 4px var(--px-dark);
+}
+.game-sheet .game__video iframe{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  border:0;
+}
+
+.chips{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+.chips li{
+  display:flex;align-items:center;flex-wrap:wrap;gap:4px 8px;
+  padding:6px 10px;line-height:1.3;
+  background:#e3d6ff;              /* fundo lilás claro */
+  color:#2b2347;                   /* texto escuro */
+  box-shadow:0 0 0 3px #8257c9;    /* contorno lilás escuro */
+}
+.chips img,.sheet-h img{width:32px;height:32px;image-rendering:pixelated;flex:none}
+.chips b{color:#6a45b0;font-weight:normal;margin-right:4px}
+.sheet-h{display:flex;align-items:center;gap:8px;margin:22px 0 8px}
+
+.role-chips span{
+  display:inline-block;margin:0 8px 8px 0;padding:4px 10px;
+  background:#e3d6ff;
+  color:#2b2347;
+  box-shadow:0 0 0 3px #8257c9;
+}
+.sheet-list{padding-left:20px;line-height:1.5}
+
+.mini-list{list-style:none;margin:0;padding:0;display:grid;gap:14px}
+.mini-list li{
+  display:flex;gap:14px;align-items:center;
+  padding:8px;background:#e3d6ff;color:#2b2347;box-shadow:0 0 0 3px #8257c9;
+}
+.mini-list img{
+  width:140px;height:96px;object-fit:cover;flex:none;
+  box-shadow:0 0 0 3px #4a3578;
+}
+.mini-list b{display:block;color:#6a45b0}
+.mini-list span{display:block;line-height:1.35}
+
+.sheet-shots{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px;margin:16px 0}
+.sheet-shots figure{margin:0}
+.sheet-shots img{
+  width:100%;display:block;
+  box-shadow:0 0 0 3px #8257c9,0 6px 0 3px #14121f;
+}
+.sheet-shots figcaption{margin-top:10px;font-size:14px;text-align:center}
+@media(max-width:700px){
+  .game-sheet__top{grid-template-columns:1fr}
+  .mini-list li{flex-direction:column;align-items:flex-start}
+  .mini-list img{width:100%;height:auto;aspect-ratio:16/9}
+}
+
+
+/* ===== botões pixel retangulares (voltar) ===== */
+
+/* "início do site" (topo da seção) */
+.px-btn.px-btn--wide{
+  width:auto;
+  min-width:210px;
+  flex-direction:row;
+  justify-content:center;
+  gap:10px;
+  padding:6px 18px 6px 12px;
+  white-space:nowrap;
+  font-size:16px;
+  cursor:pointer;
+}
+.px-btn.px-btn--wide img{width:32px;height:32px}
+
+/* "todos os jogos" (dentro da ficha) */
+.px-btn.px-btn--wide.px-btn--small{
+  min-width:190px;
+  padding:5px 16px 5px 10px;
+  font-size:14px;
+  margin:6px 0 18px;
+  background:#6a45b0;
+}
+.px-btn.px-btn--wide.px-btn--small img{width:24px;height:24px}
+.px-btn.px-btn--wide.px-btn--small:hover{background:#8257c9}
+
+
+/* ============================================================
+   PUBLICAÇÕES ACADÊMICAS — cartões com capa, evento e logos
+   ============================================================ */
+.pub-grid{display:grid;gap:22px;margin-top:18px}
+
+.pub-card{
+  display:grid;
+  grid-template-columns:170px 1fr;
+  gap:14px 20px;
+  align-items:start;
+  padding:14px 16px 18px;
+  background:#e3d6ff;
+  color:#2b2347;
+  box-shadow:0 0 0 3px #8257c9,0 7px 0 3px #14121f;
+}
+
+/* cabeçalho: nome do evento à esquerda, logos à direita */
+.pub-card__head{
+  grid-column:1 / -1;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  flex-wrap:wrap;
+  gap:10px 16px;
+  padding-bottom:10px;
+  border-bottom:3px solid #8257c9;
+}
+.pub-card__head h4{margin:0;font-size:22px;color:#4a3578}
+
+/* logos (UFPel, CAPES, CNPq) */
+.pub-card .pub-card__logos{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  margin:0;
+  padding:5px 10px;
+  background:#ffffff;
+  box-shadow:0 0 0 2px #8257c9;
+}
+.pub-card .pub-card__logos img{
+  height:28px;          /* tamanho padrão dos logos: mude aqui */
+  max-height:28px;
+  width:auto;
+  max-width:90px;
+  aspect-ratio:auto;
+  object-fit:contain;
+  display:block;
+  box-shadow:none;
+}
+.pub-card .pub-card__logos img[alt="UFPel"]{height:48px;max-height:48px}
+
+/* capa maior, ocupa a coluna inteira */
+.pub-card__cover{display:block}
+.pub-card__cover img{
+  width:100%;
+  aspect-ratio:3/4;
+  object-fit:cover;
+  display:block;
+  background:#14121f;
+  box-shadow:0 0 0 3px #4a3578;
+  transition:transform .15s;
+}
+.pub-card__cover:hover img{transform:translateY(-3px)}
+
+/* texto */
+.pub-card__tag{
+  display:inline-block;
+  margin-bottom:8px;
+  padding:2px 8px;
+  background:#f2c94c;
+  color:#14121f;
+  font-size:13px;
+  font-weight:bold;
+  box-shadow:0 0 0 2px #14121f;
+}
+.pub-card__tag--award{background:#5fd38d}
+
+.pub-card__tag--qualis{background:#e6527e}  
+
+.pub-card__title{margin:0 0 6px;font-style:italic;line-height:1.35;font-size:18px}
+.pub-card__authors{margin:0 0 8px;font-size:14px;color:#6a45b0;line-height:1.35}
+.pub-card__desc{margin:0 0 12px;font-size:15px;line-height:1.45;opacity:.9}
+
+/* botão pixel "ler publicação" */
+.pub-card .pub-card__btn{
+  display:inline-flex;
+  width:fit-content;
+  margin:8px 0 0;
+  text-decoration:none;
+  color:#ffffff;
+}
+
+@media(max-width:560px){
+  .pub-card{grid-template-columns:1fr}
+  .pub-card__cover img{max-width:180px}
+}
+
+/* ===== LIGHTBOX ===== */
+.gallery__item img,
+.sheet-shots img{cursor:zoom-in}
+.gallery__item img{transition:transform .15s, filter .15s}
+.gallery__item img:hover{filter:brightness(1.12)}
+
+.lightbox{
+  position:fixed;
+  inset:0;
+  z-index:200;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:16px;
+  padding:56px 16px 24px;
+  background:rgba(12,10,20,.92);
+}
+.lightbox[hidden]{display:none}
+
+.lightbox__figure{
+  margin:0;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  max-width:calc(100vw - 160px);
+}
+.lightbox__figure img{
+  max-width:100%;
+  max-height:calc(100vh - 150px);
+  width:auto;height:auto;
+  object-fit:contain;                       /* mostra a imagem inteira */
+  background:#14121f;
+  box-shadow:0 0 0 4px #8257c9,0 10px 0 4px #14121f;
+}
+.lightbox__figure figcaption{
+  margin-top:20px;
+  color:#e3d6ff;
+  font-size:16px;
+  text-align:center;
+}
+
+.lightbox__close{
+  position:absolute;
+  top:14px;
+  right:18px;
+  margin:0;
+}
+
+.lightbox__nav{
+  width:48px;height:64px;flex:none;
+  border:0;
+  font-size:38px;line-height:1;
+  color:#fff;
+  background:#4a3578;
+  box-shadow:0 0 0 3px #8257c9,0 5px 0 3px #14121f;
+  cursor:pointer;
+  transition:background .12s;
+}
+.lightbox__nav:hover{background:#6a45b0}
+
+@media(max-width:560px){
+  .lightbox{padding:60px 8px 16px;gap:6px}
+  .lightbox__figure{max-width:calc(100vw - 110px)}
+  .lightbox__nav{width:36px;height:52px;font-size:28px}
+}
+
+.section__body h3.art-title{
+  color:#4a3578;          /* roxo escuro: troque pela cor que quiser */
+  font-size:20px;
+  text-transform:none;    /* tira as maiúsculas, se preferir */
+  letter-spacing:.02em;
+}
+
+.about-mini .about-mini__now{
+  font-size:13px;
+  line-height:1.4;
+  padding:6px 8px;
+  color:#2b2347;
+  background:#e3d6ff;
+  box-shadow:0 0 0 2px #8257c9;
+}
+
+/* selo WIP nos desenhos da galeria */
+.gallery__item{position:relative}
+.gallery__item .game-tile__wip{
+  top:8px;
+  right:8px;
+  pointer-events:none;     /* o clique passa para a imagem e abre o lightbox */
+}
+
+/* ícone do programa na legenda */
+.gallery__item figcaption{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:8px;
+}
+.gallery__item .cap-icon{
+  width:22px;
+  height:22px;
+  height:auto;
+  max-height:22px;
+  object-fit:contain;
+  flex:none;
+  cursor:default;
+}
+
+/* vídeo de processo na galeria de ilustração */
+/* card do vídeo: contorno envolve vídeo + legenda */
+.art-video{
+  max-width:560px;
+  margin:0 auto 26px;
+  background:transparent;                     /* era #e3d6ff: agora usa o fundo da página */
+  box-shadow:0 0 0 4px var(--px-line), 0 8px 0 4px var(--px-dark);
+}
+.art-video__frame{
+  position:relative;
+  width:100%;
+  aspect-ratio:16/9;
+  background:#350042;
+  border-bottom:4px solid var(--px-line);   /* linha que separa vídeo e legenda */
+}
+.art-video__frame iframe{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  border:0;
+}
+.art-video figcaption{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:6px;
+  margin:0;
+  padding:5px 10px;                            /* era 10px 14px: legenda mais baixa */
+  font-size:17px;
+  line-height:1.2;
+  color:#2b2347;
+}
+
+
+.art-video--vertical .art-video__frame{
+  aspect-ratio:9/16;
+  max-width:250px;
+  margin:0 auto;
+}
+
+/* ícone do programa nas legendas (galeria e vídeo) */
+.cap-icon{
+  width:22px;
+  height:22px;
+  max-width:22px;
+  max-height:22px;
+  object-fit:contain;
+  flex:none;
+  cursor:default;
+}
+.art-video figcaption{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:8px;
+  margin-top:18px;
+  font-size:14px;
+}
+
+/* ===== CELULAR / TELAS PEQUENAS ===== */
+@media (max-width: 900px){
+  .table{ padding: 16px 14px 120px; }
+
+  /* ---- Sobre mim: compacto, foto à esquerda e texto à direita ---- */
+  .about-mini{
+    position: relative;
+    top: auto; left: auto;
+    width: calc(100% - 16px);
+    max-width: 420px;
+    margin: 14px auto 26px;
+    padding: 14px 12px 12px;
+    display: grid;
+    grid-template-columns: 72px 1fr;
+    gap: 10px 12px;
+    align-items: center;
+    text-align: left;
+  }
+  .about-mini .title{
+    grid-column: 1 / -1;
+    width: 100%; max-width: none; height: auto;
+    margin: 0; padding: 6px 10px;
+  }
+  .about-mini .title span{ font-size: 18px; }
+  .about-mini__photo{ width: 72px; height: 72px; border-width: 3px; }
+  .about-mini p{ font-size: 12.5px; line-height: 1.45; }
+  .about-mini__links{ grid-column: 1 / -1; gap: 12px; margin-top: 2px; }
+  .about-mini::before,
+  .about-mini::after{ width: 32px; height: 32px; top: -16px; }
+  .about-mini::before{ left: -12px; }
+  .about-mini::after{ right: -12px; }
+
+  /* ---- Livro e cartas: tamanhos proporcionais à largura da tela ---- */
+  .book{ width: 94vw; }
+  .fan-card{
+    width: 11.5vw; height: 17.8vw;
+    margin: -8.9vw 0 0 -5.75vw;
+  }
+  .fan-card.is-active{
+    width: 44vw; height: 68vw;
+    margin: -34vw 0 0 -22vw;
+  }
+
+  /* ---- Entrar / Fechar: horizontais, acima da faixa de fala ---- */
+  .info{
+    top: auto; right: auto;
+    left: 50%; bottom: 96px;
+    padding: 0;
+    transform: translateX(-50%) translateY(14px);
+  }
+  .info.is-visible{ transform: translateX(-50%); }
+  .info__actions{ flex-direction: row; gap: 22px; }
+  .px-btn{ width: 78px; }
+  .px-btn img{ width: 36px; height: 36px; }
+
+  /* ---- Gata: o background-size TEM que ser 300% 400% ---- */
+  .familiar{
+    width: 150px; height: 150px;
+    left: -22px; bottom: -6px;
+    background-size: 300% 400%;
+  }
+  .speech-bar{ min-height: 64px; padding: 10px 14px 10px 122px; }
+  .speech-bar p{ font-size: 14px; line-height: 1.3; }
+
+  /* ---- Páginas internas ---- */
+  .px-btn.px-btn--wide{ min-width: 0; width: auto; }
+  .gallery{ grid-template-columns: 1fr; }
+}

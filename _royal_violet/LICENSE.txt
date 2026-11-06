@@ -1,0 +1,13 @@
+ASSET LICENSE
+
+You may:
+- Use these assets in unlimited personal and commercial projects (games, apps,
+  videos, prototypes), with no credit required (credit is appreciated!).
+- Modify the assets to fit your project.
+
+You may NOT:
+- Redistribute or resell these assets (modified or not) as an asset pack,
+  template, or collection, or make them available for download outside of a
+  compiled project.
+
+Provided "as is", without warranty of any kind.

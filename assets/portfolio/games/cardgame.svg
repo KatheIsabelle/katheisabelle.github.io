@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" shape-rendering="crispEdges" width="256" height="256">
+  <rect width="16" height="16" fill="#14121f"/>
+  <path fill="#8257c9" d="M1 0h14v1H1zM1 15h14v1H1zM0 1h1v14H0zM15 1h1v14h-1z"/>
+  <rect x="1" y="1" width="14" height="14" fill="#2b2347"/>
+  <!-- carta esquerda -->
+  <path fill="#4a3578" d="M3 6h4v7H3z"/>
+  <path fill="#c9a7ff" d="M3 6h4v1H3zM3 12h4v1H3zM3 6h1v7H3zM6 6h1v7H6z"/>
+  <path fill="#ff4f81" d="M4 8h1v1H4zM5 8h1v1H5zM4 9h2v1H4z"/>
+  <!-- carta direita -->
+  <path fill="#4a3578" d="M9 6h4v7H9z"/>
+  <path fill="#c9a7ff" d="M9 6h4v1H9zM9 12h4v1H9zM9 6h1v7H9zM12 6h1v7h-1z"/>
+  <path fill="#5fd38d" d="M10 8h2v1h-2zM10 9h2v1h-2z"/>
+  <!-- carta do meio (frente) -->
+  <path fill="#e3d6ff" d="M6 3h4v9H6z"/>
+  <path fill="#8257c9" d="M6 3h4v1H6zM6 11h4v1H6zM6 3h1v9H6zM9 3h1v9H9z"/>
+  <!-- naipe/estrela dourada -->
+  <path fill="#f2c94c" d="M8 5h1v1H8zM7 6h3v1H7zM8 7h1v1H8zM7 8h1v1H7zM9 8h1v1H9z"/>
+</svg>

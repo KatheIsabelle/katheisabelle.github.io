@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>Ideias — balão de fala</title>
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital@0;1&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink-night:#14121f; --parchment:#e8dcc0; --ancient-gold:#c9a227; --old-rose:#b76e79; --amethyst:#6a4c93;
+  }
+  *{ box-sizing:border-box; }
+  body{ margin:0; background:#201c33; padding:40px 20px; font-family:sans-serif; display:flex; flex-direction:column; gap:56px; align-items:center; }
+  .label{ color:#e8dcc099; font-size:12px; margin-bottom:10px; text-align:center; }
+  .bubble{
+    position:relative; max-width:320px; background:var(--parchment);
+    border:2px solid var(--ancient-gold); border-radius:16px; padding:16px 22px;
+    box-shadow:0 8px 18px rgba(0,0,0,0.4);
+  }
+  .bubble p{ margin:0; font-family:'EB Garamond',serif; font-style:italic; font-weight:500;
+    font-size:16px; line-height:1.45; color:var(--ink-night); text-align:center; min-height:44px; }
+  .bubble::after{ content:""; position:absolute; left:50%; bottom:-11px; transform:translateX(-50%);
+    width:0;height:0; border-left:11px solid transparent; border-right:11px solid transparent; border-top:11px solid var(--ancient-gold); }
+  .bubble::before{ content:""; position:absolute; left:50%; bottom:-7.5px; transform:translateX(-50%);
+    width:0;height:0; border-left:9px solid transparent; border-right:9px solid transparent; border-top:9px solid var(--parchment); z-index:1; }
+
+  .cursor{ display:inline-block; width:2px; background:var(--ink-night); margin-left:2px; animation:blink 0.8s steps(1) infinite; }
+  @keyframes blink{ 50%{ opacity:0; } }
+
+  .letter{ display:inline-block; animation:bob 2.2s ease-in-out infinite; }
+  @keyframes bob{ 0%,100%{ transform:translateY(0) rotate(0deg); } 50%{ transform:translateY(-3px) rotate(-2deg); } }
+
+  .shimmer{
+    background: linear-gradient(100deg, var(--ink-night) 35%, var(--ancient-gold) 50%, var(--ink-night) 65%);
+    background-size: 220% 100%;
+    -webkit-background-clip:text; background-clip:text; color:transparent;
+    animation: shimmerMove 2.8s ease-in-out infinite;
+  }
+  @keyframes shimmerMove{ 0%{ background-position:150% 0; } 100%{ background-position:-50% 0; } }
+
+  .sparkletrail{ position:relative; }
+  .spk{ position:absolute; width:8px; height:8px; opacity:0; pointer-events:none;
+    background:
+      linear-gradient(var(--ancient-gold),var(--ancient-gold)) center/2px 100% no-repeat,
+      linear-gradient(var(--ancient-gold),var(--ancient-gold)) center/100% 2px no-repeat;
+    animation: spktw 1.6s ease-out infinite;
+  }
+  @keyframes spktw{ 0%{ opacity:0; transform:scale(0.3) rotate(0deg); } 40%{ opacity:1; transform:scale(1) rotate(45deg);} 100%{ opacity:0; transform:scale(0.2) rotate(90deg);} }
+</style>
+</head>
+<body>
+
+<div>
+  <div class="label">1. Typewriter — a fala "digitada" pelo gato em tempo real</div>
+  <div class="bubble"><p id="tw"></p></div>
+</div>
+
+<div>
+  <div class="label">2. Letras boiando (igual o título) — cada letra com delay levemente diferente</div>
+  <div class="bubble"><p id="bob"></p></div>
+</div>
+
+<div>
+  <div class="label">3. Brilho passando por cima do texto (shimmer)</div>
+  <div class="bubble"><p class="shimmer">psiu... escolhe uma carta pra conhecer meu trabalho</p></div>
+</div>
+
+<div>
+  <div class="label">4. Typewriter + sparkle seguindo a "pena mágica"</div>
+  <div class="bubble sparkletrail"><p id="tw2"></p><span class="spk" id="spk"></span></div>
+</div>
+
+<script>
+function typewriter(elId, text, speed, loop){
+  const el = document.getElementById(elId);
+  let i = 0;
+  function tick(){
+    if (i <= text.length){
+      el.innerHTML = text.slice(0,i) + '<span class="cursor">&nbsp;</span>';
+      i++;
+      setTimeout(tick, speed);
+    } else {
+      setTimeout(()=>{ i=0; tick(); }, 1600);
+    }
+  }
+  tick();
+}
+typewriter('tw', 'psiu... escolhe uma carta pra conhecer meu trabalho', 45);
+
+function bobText(elId, text){
+  const el = document.getElementById(elId);
+  el.innerHTML = text.split('').map((ch,i)=>{
+    const safe = ch===' ' ? '&nbsp;' : ch;
+    return '<span class="letter" style="animation-delay:'+(i*0.06)+'s">'+safe+'</span>';
+  }).join('');
+}
+bobText('bob', 'psiu... escolhe uma carta pra conhecer meu trabalho');
+
+function typewriterWithSpark(elId, sparkId, text, speed){
+  const el = document.getElementById(elId);
+  const spk = document.getElementById(sparkId);
+  const bubble = el.closest('.bubble');
+  let i = 0;
+  function tick(){
+    if (i <= text.length){
+      el.innerHTML = text.slice(0,i) + '<span class="cursor">&nbsp;</span>';
+      const rects = el.getClientRects();
+      if (rects.length){
+        const r = rects[rects.length-1];
+        const br = bubble.getBoundingClientRect();
+        spk.style.left = (r.right - br.left) + 'px';
+        spk.style.top = (r.top - br.top - 4) + 'px';
+      }
+      i++;
+      setTimeout(tick, speed);
+    } else {
+      setTimeout(()=>{ i=0; tick(); }, 1600);
+    }
+  }
+  tick();
+}
+typewriterWithSpark('tw2','spk','psiu... escolhe uma carta pra conhecer meu trabalho', 45);
+</script>
+</body>
+</html>

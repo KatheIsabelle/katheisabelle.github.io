@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" shape-rendering="crispEdges" width="256" height="256">
+  <rect width="16" height="16" fill="#14121f"/>
+  <path fill="#8257c9" d="M1 0h14v1H1zM1 15h14v1H1zM0 1h1v14H0zM15 1h1v14h-1z"/>
+  <rect x="1" y="1" width="14" height="14" fill="#2b2347"/>
+  <!-- lua crescente -->
+  <path fill="#e3d6ff" d="M11 3h2v1h-2zM10 4h1v2h-1zM11 6h2v1h-2z"/>
+  <!-- argola -->
+  <path fill="#8a8aa8" d="M7 2h2v1H7zM6 3h1v1H6zM9 3h1v1H9z"/>
+  <!-- topo da lanterna -->
+  <path fill="#8a8aa8" d="M5 4h6v1H5z"/>
+  <!-- vidro -->
+  <path fill="#4a3578" d="M5 5h6v6H5z"/>
+  <path fill="#c9a7ff" d="M5 5h1v6H5zM10 5h1v6h-1z"/>
+  <!-- chama -->
+  <path fill="#f2c94c" d="M7 6h2v4H7z"/>
+  <path fill="#ff9a3c" d="M7 8h2v2H7z"/>
+  <path fill="#ffffff" d="M8 8h1v1H8z"/>
+  <!-- base -->
+  <path fill="#8a8aa8" d="M5 11h6v1H5z"/>
+  <path fill="#5c5c78" d="M6 12h4v1H6z"/>
+  <!-- grama -->
+  <path fill="#5fd38d" d="M3 13h1v1H3zM12 12h1v2h-1zM13 13h1v1h-1z"/>
+</svg>
