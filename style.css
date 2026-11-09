@@ -9,6 +9,10 @@
   --amethyst: #6a4c93;
   --twilight-blue: #2f3e6e;
   --old-rose: #b76e79;
+  --coral: #E47E73;
+  --orange: #DC925A;
+  --cyan: #48B9C4;
+  --blue: #579BD8;
 
   --px-line: #8257c9;
   --px-dark: #14121f;
@@ -610,6 +614,9 @@ a, button, .fan-card, [role="button"], .title, .familiar{
    (áreas de atuação, projetos, instituições) */
 .hl{ font-weight: 600; }
 .hl--gold{ color: var(--ancient-gold); }
+.hl--cyan{color: var(--cyan)}
+.hl--blue{color: var(--blue)}
+.hl--orange{color: var(--orange)}
 .hl--rose{ color: var(--old-rose); }
 .hl--violet{ color: #b39ddb; }
 
@@ -1244,4 +1251,60 @@ a, button, .fan-card, [role="button"], .title, .familiar{
   /* ---- Páginas internas ---- */
   .px-btn.px-btn--wide{ min-width: 0; width: auto; }
   .gallery{ grid-template-columns: 1fr; }
+}
+
+a.hl--gold { color: var(--ancient-gold); }
+a.hl--cyan { color: var(--cyan); }
+a.hl--blue { color: var(--blue); }
+a.hl--orange { color: var(--orange); }
+a.hl--rose { color: var(--old-rose); }
+a.hl--violet { color: #b39ddb; }
+
+.about-links-box{
+  position: relative;
+  margin: 32px 10px 8px;
+  padding: 18px 14px 16px;
+  text-align: center;
+  background: var(--px-fill);
+  box-shadow:
+    0 -4px 0 0 var(--px-line), 0 4px 0 0 var(--px-line), -4px 0 0 0 var(--px-line), 4px 0 0 0 var(--px-line),
+    0 -8px 0 0 var(--px-dark), 0 8px 0 0 var(--px-dark), -8px 0 0 0 var(--px-dark), 8px 0 0 0 var(--px-dark),
+    inset 0 4px 0 0 rgba(255,255,255,0.08), inset 0 -4px 0 0 rgba(0,0,0,0.25);
+}
+.about-links-box::before,
+.about-links-box::after{
+  content: "";
+  position: absolute;
+  top: -18px;
+  width: 36px;
+  height: 36px;
+  background-repeat: no-repeat;
+  background-size: contain;
+  image-rendering: pixelated;
+  pointer-events: none;
+}
+.about-links-box::before{ left: -16px; background-image: url('assets/halloween/cobweb.png'); }
+.about-links-box::after{ right: -16px; background-image: url('assets/halloween/candelabra.png'); }
+
+.about-links-box__title{
+  margin: 0;
+  font-family: var(--font-title);
+  font-size: 18px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ancient-gold);
+  text-shadow: 0 2px 0 var(--px-dark);
+}
+.about-links-box__sub{
+  margin: 4px 0 14px;
+  font-size: 14px;
+  color: var(--parchment);
+  opacity: 0.85;
+}
+.about-links-box .about-links{
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  justify-content: center;
+  margin: 0;
 }

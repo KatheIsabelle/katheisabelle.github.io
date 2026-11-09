@@ -16,41 +16,46 @@ const CARDS = [
     eyebrow: "sobre mim",
     title: "Kathe Beserra",
     body: `
-
-    <p>Sou <span class="hl hl--gold">Game Designer</span> e <span class="hl hl--gold">desenvolvedora</span>
+  
+    <p>Sou <span class="hl hl--rose">Game Designer</span> e <span class="hl hl--rose">desenvolvedora</span>
     independente, apaixonada por criar experiências marcantes e únicas por meio dos jogos.</p>
-
-    <p>Já atuei como game designer e gameplay designer em <span class="hl hl--rose">Dungeon Runner</span>, um roguelike
-    de deck-building publicado na Google Play, com arquitetura orientada a dados pras cartas, inimigos e itens —
-    escrevi o game design document completo e o lore do jogo. Também fui game designer, desenvolvedora e artista 3D
-    do <a class="hl hl--rose" href="https://katheisabelle.itch.io/tnt-party-game" target="_blank" rel="noopener">TNT Party Game</a>, com cinco minigames multiplayer local, feito na SoulCode
-    Academy com patrocínio da TNT Energy Drink.</p>
-
-    <p>Formada em <strong>Engenharia de Computação</strong> pela UFPel e o meu trabalho de conclusão de curso foi o
-    <a class="hl hl--rose" href="https://katheisabelle.itch.io/odisseia-2d" target="_blank" rel="noopener">Odisseia 2D</a>, um jogo educativo sobre circuitos digitais desenvolvido em
-    Unity, que recebeu destaque na Semana Integrada de Inovação, Ensino, Pesquisa e Extensão (SIIEPE) e foi
-    publicado no <a class="hl hl--gold" href="https://sol.sbc.org.br/index.php/sbie/article/view/31298" target="_blank" rel="noopener">Simpósio Brasileiro de Informática na Educação (SBIE)</a>, evento Qualis A3.</p>
-
-    <p>Atualmente faço <strong>pós-graduação [Mestrado]</strong> (PPGC) na mesma universidade, pesquisando no
-    <span class="hl hl--violet">LUPS</span> (Laboratório de Sistemas Ubíquos e Paralelos) uma aplicação de
-    realidade virtual pra Meta Quest, criada pra apoiar o aprendizado da escrita manuscrita em crianças. Esse
-    trabalho foi publicado no Symposium on Virtual and Augmented Reality (SVR), o principal evento de RV/RA do
-    Brasil, promovido pela Comissão Especial de Realidade Virtual e Aumentada (CERV) da SBC — outro evento Qualis A3.</p>
 
     <p>Tenho experiência com <strong>programação</strong>
     (<img class="tech-icon" src="assets/portfolio/skills/csharp.png" alt="C#">,
     <img class="tech-icon" src="assets/portfolio/skills/python.png" alt="Python">,
     <img class="tech-icon" src="assets/portfolio/skills/javascript.png" alt="JavaScript">),
     <strong>desenvolvimento de jogos</strong> 2D/3D em
-    <img class="tech-icon" src="assets/portfolio/skills/unity.png" alt="Unity">,
+    <img class="tech-icon" src="assets/portfolio/skills/unity.png" alt="Unity">Unity,
     <strong>modelagem e animação</strong> 3D com
-    <img class="tech-icon" src="assets/portfolio/skills/blender.png" alt="Blender">,
+    <img class="tech-icon" src="assets/portfolio/skills/blender.png" alt="Blender">Blender,
     <strong>ilustração digital</strong> no
-    <img class="tech-icon" src="assets/portfolio/skills/photoshop.png" alt="Photoshop">
+    <img class="tech-icon" src="assets/portfolio/skills/photoshop.png" alt="Photoshop"> Adobe Photoshop
     e <strong>inglês avançado</strong> com certificações.</p>
+
+    <p>Atuei profissionalmente no jogo <a class="hl hl--blue" href="https://play.google.com/store/apps/details?id=bibiugames.magicards&pli=1" target="_blank" rel="noopener">MagiCards</a>
+    onde exerci tarefas de <strong>game design</strong>, <strong>narrative design & worldbuilding</strong>, <strong>character & creature design</strong>, <strong>item design</strong> e <strong>environment concept development</strong>. Este é um jogo dungeon crawler e card game colecionável publicado para android.</p> 
     
-     <div class="about-links">
-      <a class="icon-btn" href="https://katheisabelle.itch.io" target="_blank" rel="noopener" aria-label="itch.io">
+    <p>E ainda, contribui como <strong>game designer</strong>, <strong>desenvolvedora</strong> e <strong>artista 3D</strong>
+    no <a class="hl hl--blue" href="https://katheisabelle.itch.io/tnt-party-game" target="_blank" rel="noopener">TNT Party Game</a>.
+    Um jogo com cinco minigames multiplayer local, feito no bootcamp da <a class="hl hl--blue" href="https://soulcode.com" target="_blank" rel="noopener">SoulCode Academy</a>  com patrocínio da TNT Energy Drink.</p>
+
+    <p>Atualmente estou na <strong>pós-graduação [Mestrado]</strong> na UFPel, faço parte do grupo de pesquisa
+    <a class="hl hl--blue" href="https://lups.inf.ufpel.edu.br/about/doku.php?id=start" target="_blank" rel="noopener">LUPS</a>
+    (Laboratório de Sistemas Ubíquos e Paralelos), onde estou desenvolvendo o <span class="hl hl--rose">HandWriting VR</span> uma aplicação em <strong>realidade virtual</strong> para Meta Quest.
+    O objetivo é auxiliar crianças em fase de alfabetização no processo de aprendizado da escrita manual, de forma a torná-lo cativante.
+    Esse trabalho foi publicado no <a class="hl hl--blue" href="https://svr.sbc.org.br/2026/" target="_blank" rel="noopener">SVR</a>
+    (Symposium on Virtual and Augmented Reality), o principal evento de RV/RA do Brasil, promovido pela Comissão Especial de Realidade Virtual e Aumentada (CERV) da SBC — evento Qualis A3.</p>
+
+    <p>Também sou graduada em <strong>engenharia de computação</strong> pela mesma universidade e o meu trabalho de conclusão de curso foi o
+    <a class="hl hl--rose" href="https://katheisabelle.itch.io/odisseia-2d" target="_blank" rel="noopener">Odisseia 2D</a>, um <strong>puzzle game educacional</strong> sobre circuitos digitais desenvolvido na
+    Unity. Esse trabalho foi publicado no <a class="hl hl--blue" href="https://sol.sbc.org.br/index.php/sbie/article/view/31298" target="_blank" rel="noopener">Simpósio Brasileiro de Informática na Educação (SBIE)</a> — outro evento Qualis A3.</p>
+
+
+
+    <div class="about-links-box">
+    <p class="about-links-box__title">✦Minhas redes & currículo:✦</p>
+    <div class="about-links">
+        <a class="icon-btn" href="https://katheisabelle.itch.io" target="_blank" rel="noopener" aria-label="itch.io">
         <img src="assets/portfolio/icons/itch.png" alt="itch.io">
       </a>
       <a class="icon-btn" href="https://github.com/KatheIsabelle" target="_blank" rel="noopener" aria-label="GitHub">
@@ -65,8 +70,9 @@ const CARDS = [
       <a class="icon-btn" href="https://drive.google.com/file/d/1XQMn1mp_J-I52Tkbost6bdA48JsdXqvA/view?usp=sharing" target="_blank" rel="noopener" aria-label="Currículo">
         <img src="assets/portfolio/icons/cv.png" alt="Currículo">
       </a>
-
+      </div>
     </div>
+    
     `
   },
 
@@ -227,7 +233,7 @@ const CARDS = [
 
         
         <h4 class="sheet-h"><img src="assets/halloween/spell_book.png" alt="">Sobre</h4>
-        <p>Embarque em uma envolvente aventura 2D com câmera no estilo top-down e gênero puzzle RPG.
+        <p>Embarque em uma envolvente aventura <strong>2D</strong> com câmera no estilo <strong>top-down</strong> e gênero <strong>puzzle RPG</strong>.
         Explore um mundo elétrico e desafiador, onde cada fase propõe enigmas baseados em Técnicas e Circuitos Digitais.</p>
 
         <p>Você será o protagonista: um jovem humano que, por acidente, foi transportado para um mundo nanométrico e totalmente desconhecido.
@@ -298,8 +304,8 @@ const CARDS = [
         </p>
 
         <h4 class="sheet-h"><img src="assets/halloween/spell_book.png" alt="">Sobre</h4>
-         <p>No universo de diversão da TNT, quatro competidores enfrentam uma série de desafios em ambientes Sci-fi, 
-        participando de cinco tipos de mini-games.</p> 
+         <p>No universo de diversão da TNT, <strong>quatro competidores</strong> enfrentam uma série de <strong>desafios</strong> em ambientes Sci-fi, 
+        participando de cinco tipos de <strong>mini-games</strong>.</p> 
         
         <p>Esses jogos foram planejados e desenvolvidos para um evento especial 
         chamado "Dinâmica Energética".Os jogadores competem intensamente, acumulando pontos por meio de seu desempenho e 
@@ -375,7 +381,7 @@ const CARDS = [
         </p>
 
         <h4 class="sheet-h"><img src="assets/halloween/spell_book.png" alt="">Sobre</h4>
-        <p>Jogo 2D top-down em que você assume o papel de um cavaleiro solitário em um mundo
+        <p>Jogo <strong>2D top-down</strong> em que você assume o papel de um cavaleiro solitário em um mundo
         desconhecido, enfrentando criaturas diversas e construindo seu próprio lar em meio ao caos.</p>
         <p>Uma experiência que mistura sobrevivência, introspecção e a busca por paz em um universo vasto.</p>
 
@@ -426,10 +432,16 @@ const CARDS = [
         </p>
 
         <h4 class="sheet-h"><img src="assets/halloween/spell_book.png" alt="">Sobre</h4>
-        <p>Assuma o papel do herói e embarque em uma missão épica para caçar e capturar DarkSkull,
+        <p>Nesse jogo de <strong>plataforma 2D</strong>, assuma o papel do herói e embarque em uma missão épica para caçar e capturar DarkSkull,
         um demônio determinado a espalhar o caos por sua terra natal.</p>
         <p>Enfrente seus aliados corrompidos, explore cenários sombrios e aterrorizantes, e lute pela
         sua vida enquanto tenta salvar seu mundo da destruição!</p>
+
+        
+        <div class="sheet-shots">
+          <figure><img src="assets/portfolio/games/dark-1.png" alt="Floresta e inimigos" loading="lazy"></figure>
+          <figure><img src="assets/portfolio/games/dark-2.png" alt="Vila" loading="lazy"></figure>
+        </div>
 
         <h4 class="sheet-h"><img src="assets/halloween/candelabra.png" alt="">Estado atual</h4>
         <ul class="sheet-list">
@@ -456,7 +468,7 @@ const CARDS = [
     name: "O Mundo",
     meaning: "entregue ao mundo",
     eyebrow: "biblioteca de pergaminhos",
-    title: "Publicações acadêmicas",
+    title: "Publicações científicas",
     body: `
 
       <div class="pub-grid">
@@ -723,38 +735,43 @@ const CARDS = [
     eyebrow: "blog",
     title: "Crônicas da Roda",
     body: `
+
+      <p><strong>Vou reservar essa área do site para ser um blog pessoal. Aqui irei escrever sobre 
+      tópicos que acho interessante relacionados à computação, jogos, inteligência artificial e arte. 
+      O intuito é trazer dicas úteis, informação e curiosidades para quem quer se aprofundar mais nesses tópicos.</strong></p>
+
       <div class="games-grid" id="gamesGrid">
 
         <button class="game-tile" data-game="post-1">
-          <img class="game-tile__cover" src="assets/portfolio/games/post.svg" alt="">
+          <img class="game-tile__cover" src="assets/portfolio/blog/posts/dicas.png" alt="">
           <span class="game-tile__wip">WIP</span>
           <span class="game-tile__title">Games Dicas</span>
           <span class="game-tile__meta">em breve</span>
         </button>
 
         <button class="game-tile" data-game="post-2">
-          <img class="game-tile__cover" src="assets/portfolio/games/post.svg" alt="">
+          <img class="game-tile__cover" src="assets/portfolio/blog/posts/IA.png" alt="">
           <span class="game-tile__wip">WIP</span>
           <span class="game-tile__title">Games & IA</span>
           <span class="game-tile__meta">em breve</span>
         </button>
 
         <button class="game-tile" data-game="post-3">
-          <img class="game-tile__cover" src="assets/portfolio/games/post.svg" alt="">
+          <img class="game-tile__cover" src="assets/portfolio/blog/posts/design.png" alt="">
           <span class="game-tile__wip">WIP</span>
           <span class="game-tile__title">Game Design</span>
           <span class="game-tile__meta">em breve</span>
         </button>
 
         <button class="game-tile" data-game="post-4">
-          <img class="game-tile__cover" src="assets/portfolio/games/post.svg" alt="">
+          <img class="game-tile__cover" src="assets/portfolio/blog/posts/pesquisa.png" alt="">
           <span class="game-tile__wip">WIP</span>
           <span class="game-tile__title">Pesquisa & VR</span>
           <span class="game-tile__meta">em breve</span>
         </button>
 
         <button class="game-tile" data-game="post-5">
-          <img class="game-tile__cover" src="assets/portfolio/games/post.svg" alt="">
+          <img class="game-tile__cover" src="assets/portfolio/blog/posts/arte.png" alt="">
           <span class="game-tile__wip">WIP</span>
           <span class="game-tile__title">Arte & 3D</span>
           <span class="game-tile__meta">em breve</span>
