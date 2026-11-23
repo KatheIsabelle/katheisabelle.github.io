@@ -13,6 +13,13 @@
 
 <div id="app">
 
+  <!-- botão de idioma PT | EN (fixo, aparece em todas as telas) -->
+  <button class="lang-toggle" id="langToggle" type="button" aria-label="Switch language to English">
+  <span class="lang-toggle__opt" data-lang="pt"><img src="assets/portfolio/icons/brasil.png" alt="">PT</span>
+  <span class="lang-toggle__opt" data-lang="en"><img src="assets/portfolio/icons/estados-unidos.png" alt="">EN</span>
+  </button>
+
+
   <!-- ===================== MESA (view principal) ===================== -->
   <section id="table-view" class="view view--active">
 
@@ -38,15 +45,15 @@
           <span id="titleText">Kathe Beserra</span>
         </h1>
         <img class="about-mini__photo" src="assets/portfolio/about/me.jpg" alt="Kathe Beserra">
-                Game designer e desenvolvedora com formação em Engenharia da Computação e mestranda
+        <p data-i18n="aboutMini">Game designer e desenvolvedora com formação em Engenharia da Computação e mestranda
                 em ciência da computação. Tenho experiência com Unity 2D/3D, entre código, desenho
-                e jogos, busco criar experiências marcantes e únicas. 
+                e jogos, busco criar experiências marcantes e únicas.</p>
         <div class="about-mini__links">
           <a class="px-icon" href="https://katheisabelle.itch.io" target="_blank" rel="noopener" aria-label="itch.io"><img src="assets/portfolio/icons/itch.png" alt=""></a>
           <a class="px-icon" href="https://github.com/KatheIsabelle" target="_blank" rel="noopener" aria-label="GitHub"><img src="assets/portfolio/icons/github.png" alt=""></a>
-          <a class="px-icon" href="SEU-LINK-AQUI" target="_blank" rel="noopener" aria-label="LinkedIn"><img src="assets/portfolio/icons/linkedin.png" alt=""></a>
+          <a class="px-icon" href="https://www.linkedin.com/in/kathe-beserra-6a70a3194/" target="_blank" rel="noopener" aria-label="LinkedIn"><img src="assets/portfolio/icons/linkedin.png" alt=""></a>
           <a class="px-icon" href="https://www.instagram.com/katheisab/" target="_blank" rel="noopener" aria-label="Instagram"><img src="assets/portfolio/icons/instagram.png" alt=""></a>
-          <a class="px-icon" href="https://drive.google.com/file/d/1XQMn1mp_J-I52Tkbost6bdA48JsdXqvA/view?usp=sharing" target="_blank" rel="noopener" aria-label="Currículo"><img class="px-icon__pixel" src="assets/halloween/cursed_scroll.png" alt=""></a>
+          <a class="px-icon" href="https://drive.google.com/file/d/1XQMn1mp_J-I52Tkbost6bdA48JsdXqvA/view?usp=sharing" target="_blank" rel="noopener" aria-label="Currículo" data-i18n-aria="resume"><img class="px-icon__pixel" src="assets/halloween/cursed_scroll.png" alt=""></a>
         </div>
       </aside>
 
@@ -63,8 +70,8 @@
       <!-- Ações da carta ativa (o texto agora fica no balão do gato) -->
       <div class="info" id="info">
         <div class="info__actions" id="infoActions">
-          <button class="px-btn" id="enterBtn"><img src="assets/halloween/spell_book.png" alt=""><span>entrar</span></button>
-          <button class="px-btn" id="closeBtn"><img src="assets/halloween/skull.png" alt=""><span>fechar</span></button>
+          <button class="px-btn" id="enterBtn"><img src="assets/halloween/spell_book.png" alt=""><span data-i18n="enter">entrar</span></button>
+          <button class="px-btn" id="closeBtn"><img src="assets/halloween/skull.png" alt=""><span data-i18n="close">fechar</span></button>
         </div>
       </div>
 
@@ -90,7 +97,7 @@
 
       <button class="px-btn px-btn--wide back-btn" id="backBtn">
         <img src="assets/halloween/jack_o_lantern_happy.png" alt="">
-        <span>← início do site</span>
+        <span data-i18n="back">← início do site</span>
       </button>
       <div class="section__header">
         <span class="section__symbol" id="sectionSymbol"></span>
@@ -112,17 +119,18 @@
 <div class="lightbox" id="lightbox" hidden>
   <button class="px-btn px-btn--wide px-btn--small lightbox__close" id="lightboxClose">
     <img src="assets/halloween/skull.png" alt="">
-    <span>fechar</span>
+    <span data-i18n="close">fechar</span>
   </button>
-  <button class="lightbox__nav lightbox__nav--prev" id="lightboxPrev" aria-label="anterior">‹</button>
+  <button class="lightbox__nav lightbox__nav--prev" id="lightboxPrev" aria-label="anterior" data-i18n-aria="prev">‹</button>
   <figure class="lightbox__figure">
     <img id="lightboxImg" src="" alt="">
     <figcaption id="lightboxCaption"></figcaption>
   </figure>
-  <button class="lightbox__nav lightbox__nav--next" id="lightboxNext" aria-label="próxima">›</button>
+  <button class="lightbox__nav lightbox__nav--next" id="lightboxNext" aria-label="próxima" data-i18n-aria="next">›</button>
 </div>
 
 
+<script src="i18n.js"></script>
 <script src="script.js"></script>
 </body>
 </html>

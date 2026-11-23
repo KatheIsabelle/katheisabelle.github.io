@@ -795,12 +795,12 @@ const CARDS = [
           <span>← Todos os posts</span>
         </button>
 
-        <h3 class="art-title">Primeiro post</h3>
+        <h3 class="art-title">Games & IA</h3>
         <span class="pub-card__tag">em breve</span>
 
         <p>Este post ainda está sendo escrito.</p>
       </article>
-      
+
 
       <article class="game-sheet" id="sheet-post-3" hidden>
         <button class="px-btn px-btn--wide px-btn--small" data-back>
@@ -919,7 +919,50 @@ const skyBgEl = document.getElementById("skyBg");
 /* ============================================================
    BALÃO DE FALA — texto muda conforme a pessoa interage com as cartas
    ============================================================ */
-const BUBBLE_IDLE = "Olá, seja bem-vindo(a) ao Grimório da Kathe! Escolha uma carta para saber mais.";
+/* ============================================================
+   IDIOMA (PT / EN) — os textos em inglês ficam no i18n.js
+   - lang: idioma atual, lembrado no navegador (localStorage)
+   - ui(chave): texto fixo da interface no idioma atual
+   - tr(carta, campo): campo da carta no idioma atual
+   ============================================================ */
+const LANG_KEY = "portfolio-lang";
+let lang = "pt";
+try {
+  const saved = localStorage.getItem(LANG_KEY);
+  if (saved === "pt" || saved === "en") lang = saved;
+  else lang = (navigator.language || "pt").toLowerCase().startsWith("pt") ? "pt" : "en";
+} catch (e) { /* sem localStorage: fica em PT */ }
+
+function ui(key, ...args){
+  const dict = UI[lang] || UI.pt;
+  const v = dict[key] !== undefined ? dict[key] : UI.pt[key];
+  return typeof v === "function" ? v(...args) : v;
+}
+
+function tr(card, field){
+  const en = lang === "en" ? CARDS_EN[card.id] : null;
+  return (en && en[field]) ? en[field] : card[field];
+}
+
+// aplica o idioma nos textos fixos do index.html (data-i18n / data-i18n-aria) e no botão PT|EN
+function applyStaticTexts(){
+  document.documentElement.lang = lang === "en" ? "en" : "pt-BR";
+  document.title = ui("docTitle");
+  document.querySelectorAll("[data-i18n]").forEach(el => { el.textContent = ui(el.dataset.i18n); });
+  document.querySelectorAll("[data-i18n-aria]").forEach(el => { el.setAttribute("aria-label", ui(el.dataset.i18nAria)); });
+  const toggle = document.getElementById("langToggle");
+  if (toggle){
+    toggle.setAttribute("aria-label", ui("langLabel"));
+    toggle.querySelectorAll("[data-lang]").forEach(o => o.classList.toggle("is-active", o.dataset.lang === lang));
+  }
+}
+
+/* ============================================================
+   BALÃO DE FALA — texto muda conforme a pessoa interage com as cartas
+   ============================================================ */
+function cardBubble(card){
+  return `${card.number} — ${tr(card, "name")}: ${tr(card, "meaning")}`;
+}
 
 function setBubble(text){
   bubbleTextEl.textContent = text;
@@ -974,12 +1017,12 @@ function renderFan(){
     el.style.zIndex = i;
     el.setAttribute("role", "button");
     el.setAttribute("tabindex", "0");
-    el.setAttribute("aria-label", `Virar a carta ${card.name}`);
+    el.setAttribute("aria-label", `${ui("flipCard")} ${tr(card, "name")}`);
     el.innerHTML = `
       <div class="fan-card__inner">
         <div class="fan-card__face fan-card__face--back"></div>
         <div class="fan-card__face fan-card__face--front">
-          <img src="${card.img}" alt="${card.name}">
+          <img src="${card.img}" alt="${tr(card, "name")}">
         </div>
       </div>
     `;
@@ -996,6 +1039,17 @@ function renderFan(){
   });
 }
 
+// troca de idioma: atualiza só os rótulos das cartas, sem refazer o leque (mantém a carta virada)
+function updateFanLabels(){
+  fanEl.querySelectorAll(".fan-card").forEach((el, i) => {
+    const card = CARDS[i];
+    if (!card) return;
+    el.setAttribute("aria-label", `${ui("flipCard")} ${tr(card, "name")}`);
+    const img = el.querySelector("img");
+    if (img) img.alt = tr(card, "name");
+  });
+}
+
 /* ============================================================
    PROGRESSO
    ============================================================ */
@@ -1006,7 +1060,7 @@ function renderProgress(){
     dot.className = "progress__dot" + (discovered.has(card.id) ? " is-done" : "");
     progressDots.appendChild(dot);
   });
-  progressLabel.textContent = `${discovered.size} de ${CARDS.length} cartas descobertas`;
+  progressLabel.textContent = ui("progress", discovered.size, CARDS.length);
 }
 
 /* ============================================================
@@ -1030,7 +1084,7 @@ function selectCard(card, el){
     discovered.add(card.id);
     renderProgress();
 
-    setBubble(`${card.number} — ${card.name}: ${card.meaning}`);
+    setBubble(cardBubble(card));
     setTimeout(() => infoEl.classList.add("is-visible"), 350);
   }, 300);
 }
@@ -1040,7 +1094,7 @@ function closeActive(){
   fanEl.querySelectorAll(".fan-card").forEach(c => c.classList.remove("is-active", "is-flipped"));
   fanEl.classList.remove("has-active");
   infoEl.classList.remove("is-visible");
-  setBubble(BUBBLE_IDLE);
+  setBubble(ui("bubbleIdle"));
 }
 
 /* ============================================================
@@ -1101,19 +1155,56 @@ function playSectionBgIntro(card){
 /* ============================================================
    NAVEGAÇÃO ENTRE VIEWS
    ============================================================ */
+let currentSection = null;   // carta cuja seção está aberta (null = tela do livro)
+
+// preenche cabeçalho + corpo da seção no idioma atual.
+// keepOpen = true (troca de idioma): mantém aberta a ficha em que a pessoa estava
+function renderSection(card, keepOpen){
+  const bodyEl = document.getElementById("sectionBody");
+  const openSheet = keepOpen ? bodyEl.querySelector(".game-sheet:not([hidden])") : null;
+  const openId = openSheet ? openSheet.id : null;
+  const scrollY = window.scrollY;
+
+  document.getElementById("sectionSymbol").innerHTML = `<img src="${card.img}" alt="${tr(card, "name")}">`;
+  document.getElementById("sectionEyebrow").textContent = tr(card, "eyebrow");
+  document.getElementById("sectionTitle").textContent = tr(card, "title");
+  bodyEl.innerHTML = tr(card, "body");
+
+  if (openId){
+    const sheet = document.getElementById(openId);
+    const grid = document.getElementById("gamesGrid");
+    if (sheet && grid){
+      grid.hidden = true;
+      sheet.hidden = false;
+    }
+  }
+  if (keepOpen) window.scrollTo(0, scrollY);
+}
+
 function goToSection(card){
-  document.getElementById("sectionSymbol").innerHTML = `<img src="${card.img}" alt="${card.name}">`;
-  document.getElementById("sectionEyebrow").textContent = card.eyebrow;
-  document.getElementById("sectionTitle").textContent = card.title;
+  currentSection = card;
+  renderSection(card, false);
   playSectionBgIntro(card);
-  document.getElementById("sectionBody").innerHTML = card.body;
 
   tableView.classList.remove("view--active");
   sectionView.classList.add("view--active");
   window.scrollTo(0, 0);
 }
 
+function setLang(next){
+  if (next === lang) return;
+  lang = next;
+  try { localStorage.setItem(LANG_KEY, lang); } catch (e) {}
+
+  applyStaticTexts();
+  updateFanLabels();
+  renderProgress();
+  setBubble(activeCard ? cardBubble(activeCard) : ui("bubbleIdle"));
+  if (currentSection) renderSection(currentSection, true);
+}
+
 function goToTable(){
+  currentSection = null;
   sectionView.classList.remove("view--active");
   tableView.classList.add("view--active");
   closeActive();
@@ -1144,9 +1235,17 @@ if (familiarEl) familiarEl.addEventListener("click", playMeow);
 /* ============================================================
    INIT
    ============================================================ */
+applyStaticTexts();
 renderFan();
 renderProgress();
-setBubble(BUBBLE_IDLE);
+setBubble(ui("bubbleIdle"));
+
+const langToggleEl = document.getElementById("langToggle");
+if (langToggleEl) langToggleEl.addEventListener("click", () => {
+  playHover();
+  setLang(lang === "pt" ? "en" : "pt");
+});
+
 tickFamiliar();
 setInterval(tickFamiliar, 130);
 

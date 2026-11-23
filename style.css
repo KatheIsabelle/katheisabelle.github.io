@@ -1308,3 +1308,58 @@ a.hl--violet { color: #b39ddb; }
   justify-content: center;
   margin: 0;
 }
+
+/* ===== BOTÃO DE IDIOMA PT | EN (fixo no canto superior direito) ===== */
+.lang-toggle{
+  -webkit-appearance: none;
+  appearance: none;
+  position: fixed;
+  top: 20px;
+  right: 24px;
+  z-index: 80;
+  display: flex;
+  padding: 0;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  background: var(--px-fill);
+  font-family: var(--font-title);
+  font-size: 15px;
+  letter-spacing: 0.06em;
+  box-shadow:
+    0 -3px 0 0 var(--px-line), 0 3px 0 0 var(--px-line), -3px 0 0 0 var(--px-line), 3px 0 0 0 var(--px-line),
+    0 -6px 0 0 var(--px-dark), 0 6px 0 0 var(--px-dark), -6px 0 0 0 var(--px-dark), 6px 0 0 0 var(--px-dark);
+  transition: transform .12s steps(2);
+}
+.lang-toggle:hover{ transform: translateY(-2px); }
+.lang-toggle:active{ transform: translateY(1px); }
+.lang-toggle__opt{
+  padding: 7px 11px 5px;
+  color: var(--parchment);
+  opacity: 0.55;
+}
+.lang-toggle__opt.is-active{
+  background: var(--px-fill-2);
+  color: var(--ancient-gold);
+  opacity: 1;
+  text-shadow: 0 1px 0 var(--px-dark);
+}
+
+@media (max-width: 900px){
+  .lang-toggle{ top: 12px; right: 14px; font-size: 13px; }
+  .lang-toggle__opt{ padding: 6px 9px 4px; }
+  /* abre espaço no topo pro botão de idioma não cobrir o card Sobre mim */
+  .about-mini{ margin-top: 44px; }
+}
+
+.lang-toggle__opt{
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.lang-toggle__opt img{
+  width: 18px;
+  height: 18px;
+  object-fit: contain;
+  image-rendering: pixelated;
+}
