@@ -1241,9 +1241,14 @@ renderProgress();
 setBubble(ui("bubbleIdle"));
 
 const langToggleEl = document.getElementById("langToggle");
-if (langToggleEl) langToggleEl.addEventListener("click", () => {
+if (langToggleEl) langToggleEl.addEventListener("click", (e) => {
+  // clicou em PT ou EN: escolhe exatamente aquele idioma
+  // (teclado / clique fora das opções: alterna entre os dois)
+  const opt = e.target.closest("[data-lang]");
+  const next = opt ? opt.dataset.lang : (lang === "pt" ? "en" : "pt");
+  if (next === lang) return;
   playHover();
-  setLang(lang === "pt" ? "en" : "pt");
+  setLang(next);
 });
 
 tickFamiliar();
